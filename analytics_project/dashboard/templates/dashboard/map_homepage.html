@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'dashboard/style.css' %}">
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Davidson County, TN (Nashville) Neighborhood Map</title>
+</head>
+<body>
+<div id="map">
+    {{ my_map | safe }}
+</div>
+<script>
+</script>
+</body>
+</html>
