@@ -1,3 +1,8 @@
+# SSL
+ssl-keys/
+ssl-certs/
+ssl*/
+
 # Django #
 *.log
 *.pot
