@@ -80,6 +80,8 @@ WSGI_APPLICATION = "analytics_project.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
+
+# settings.py
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
