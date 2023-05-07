@@ -1,3 +1,7 @@
+#custom
+creds.py
+my.cnf
+
 # SSL
 ssl-keys/
 ssl-certs/
