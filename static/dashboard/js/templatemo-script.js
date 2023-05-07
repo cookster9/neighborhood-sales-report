@@ -60,7 +60,7 @@ $(document).ready(function () {
     });
 
     $('.tm-btn-contact').on("click", function(e) {
-        popupInstance.goTo(4); 
+        popupInstance.goTo(2);
     })
 
     // update items based on current filters
