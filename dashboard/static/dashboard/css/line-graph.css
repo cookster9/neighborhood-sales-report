@@ -1,5 +1,8 @@
+
+
 .col {
     padding: 1em;
+    width:50%;
 }
 
 /* Graphiq starts */
@@ -36,11 +39,10 @@
 
   }
 
-.graphiq__graph-key.key{
+.key{
       font-size: 0.75em;
       text-align: center;
       display: block;
-
     }
 
 .graphiq__y-division {

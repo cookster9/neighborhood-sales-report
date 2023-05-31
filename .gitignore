@@ -1,6 +1,7 @@
 #custom
 creds.py
 my.cnf
+static/
 
 # SSL
 ssl-keys/
