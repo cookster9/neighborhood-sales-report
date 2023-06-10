@@ -28,6 +28,8 @@ print(BASE_DIR)
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config('SECRET_KEY')
 
+SECURE_SSL_REDIRECT = config('SSL_REDIRECT')
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 
