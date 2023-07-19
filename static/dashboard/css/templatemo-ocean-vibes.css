@@ -43,7 +43,7 @@ button.tm-btn {
     background-color: #49b4e9;
 }
 
-h1 { font-size: 3rem; }
+h1 { font-size: 2rem; }
 em { display: block; }
 div { box-sizing: border-box;}
 .tm-mt-35 { margin-top: 35px; }
@@ -85,7 +85,8 @@ a {
 .tm-mt-0 { margin-top: 0; }
 
 .tm-site-header {
-    padding: 60px 70px 30px;
+    padding: 10px 70px 10px;
+    width: 50%;
 }
 
 .tm-tagline {
@@ -99,11 +100,12 @@ iframe {
 
 .map-container{
     padding: 10px 70px 10px;
+    height: 80vh;
     text-align:center;
 }
 
 #map-container-id {
-    height: 96vh;
+    height: 100%;
     width: 100%;
 }
 
@@ -151,8 +153,8 @@ iframe {
 .tm-footer {
     display: flex;
     justify-content: space-between;
-    padding: 25px;
-    font-size: 0.9em;
+    padding: 10px;
+    font-size: 0.7em;
 }
 
 .tm-close-popup {
