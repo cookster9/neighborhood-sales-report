@@ -33,7 +33,7 @@ def map_rendered(request):
 def pivot_data(request):
     # Get the current date and calculate the date six weeks ago
     now = datetime.now()
-    six_weeks_ago = now - timedelta(weeks=6)
+    six_weeks_ago = now - timedelta(weeks=10)
 
     # Perform the ORM query
     queryset = RealEstateInfoScrape.objects.filter(
