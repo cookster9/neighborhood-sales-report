@@ -3,7 +3,7 @@ from django.db import models
 class Neighborhoods(models.Model):
     id = models.IntegerField(primary_key=True)
     description = models.TextField(blank=True, null=True)
-    last_updated = models.DateField(blank=True, null=True)
+    last_updated = models.DateTimeField(blank=True, null=True)
     status = models.TextField(blank=True, null=True)
     latitude = models.CharField(max_length=50, blank=True, null=True)
     longitude = models.CharField(max_length=50, blank=True, null=True)
@@ -14,8 +14,8 @@ class Neighborhoods(models.Model):
 
 
 class TnDavidsonAddresses(models.Model):
-    longitude = models.FloatField(db_column='Longitude', blank=True, null=True)  # Field name made lowercase.
-    latitude = models.FloatField(db_column='Latitude', blank=True, null=True)  # Field name made lowercase.
+    longitude = models.CharField(max_length=200, db_column='Longitude', blank=True, null=True)  # Field name made lowercase.
+    latitude = models.CharField(max_length=200, db_column='Latitude', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
