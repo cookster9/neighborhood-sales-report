@@ -39,7 +39,7 @@ def pivot_data(request):
     queryset = RealEstateInfoScrape.objects.filter(
         sale_date__gt=six_weeks_ago,
         property_use='SINGLE FAMILY'
-    )
+    ).exclude(sale_price='$0')
 
     # Access the query results
     group_dict = {}
