@@ -33,7 +33,7 @@ def map_rendered(request):
 def pivot_data(request):
     # Get the current date and calculate the date six weeks ago
     now = datetime.now()
-    six_weeks_ago = now - timedelta(weeks=6)
+    six_weeks_ago = now - timedelta(weeks=10)
 
     # Perform the ORM query
     queryset = RealEstateInfoScrape.objects.filter(
@@ -67,7 +67,9 @@ def pivot_data(request):
         if result.tn_davidson_addresses is not None:
             house_json = {'reis_id': result.id
                           ,'lat': result.tn_davidson_addresses.latitude
-                          ,'long': result.tn_davidson_addresses.longitude}
+                          ,'long': result.tn_davidson_addresses.longitude
+                          ,'address': result.location
+                          ,'sale_date': result.sale_date}
             group_dict[str(neighborhood)]['house_list'].append(house_json)
 
 

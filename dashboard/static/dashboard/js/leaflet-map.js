@@ -1,20 +1,4 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-     crossorigin=""/>
-    <link rel="stylesheet" href="{% static 'dashboard/css/base.css' %}">
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-     crossorigin=""></script>
-</head>
-<body>
-<div id="map"></div>
-</body>
-<script>
+const data = document.currentScript.dataset;
 var icon0 = new L.Icon({
   iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-black.png',
   shadowUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-shadow.png',
@@ -86,12 +70,12 @@ var iconHover = new L.Icon({
   popupAnchor: [1, -34],
   shadowSize: [46, 46]
 });
-var map = L.map('map').setView([{{nash_lat}}, {{nash_long}}], 13);
+var map = L.map('map').setView([data.nashlat, data.nashlong], 13);
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
-{% for key, value in groups.items %}
+{% for key, value in data.groups.items %}
     var marker{{key}} = L.marker([{{value.lat}}, {{value.long}}], {icon: icon{{value.icon_num}}}).addTo(map);
     var array{{key}} = new Array();
     marker{{key}}.on('mouseover', function()
@@ -111,13 +95,8 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 color: 'blue',
                 fillOpacity: 0.5,
                 radius: 30, weight: 2
-            })
-            .bindPopup(
-            "{{house_dict.address}}<br>{{house_dict.sale_date}}")
-            .addTo(map);
+            }).addTo(map);
         array{{key}}.push(circle{{house_dict.reis_id}});
     {% endfor %}
 
 {% endfor %}
-</script>
-</html>
