@@ -69,7 +69,8 @@ def pivot_data(request):
                           ,'lat': result.tn_davidson_addresses.latitude
                           ,'long': result.tn_davidson_addresses.longitude
                           ,'address': result.location
-                          ,'sale_date': result.sale_date}
+                          ,'sale_date': result.sale_date
+                          ,'sale_price': result.sale_price}
             group_dict[str(neighborhood)]['house_list'].append(house_json)
 
 

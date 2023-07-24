@@ -113,7 +113,7 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 radius: 30, weight: 2
             })
             .bindPopup(
-            "{{house_dict.address}}<br>{{house_dict.sale_date}}")
+            "{{house_dict.address}}<br>{{house_dict.sale_date}}<br>{{house_dict.sale_price}}")
             .addTo(map);
         array{{key}}.push(circle{{house_dict.reis_id}});
     {% endfor %}
