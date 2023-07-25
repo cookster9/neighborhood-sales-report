@@ -93,11 +93,6 @@ a {
     font-size: 1.5rem;   
     margin-left: 130px;
 }
-
-iframe {
-    border-style:none;
-}
-
 .map-container{
     padding: 10px 70px 10px;
     height: 80vh;

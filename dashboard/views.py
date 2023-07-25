@@ -30,7 +30,7 @@ def map_rendered(request):
     return render(request, 'dashboard/map_rendered.html', context)
 
 # /data
-def pivot_data(request):
+def leaflet_map(request):
     # Get the current date and calculate the date six weeks ago
     now = datetime.now()
     six_weeks_ago = now - timedelta(weeks=6)
@@ -83,4 +83,4 @@ def pivot_data(request):
         ,'groups': group_dict
     }
 
-    return render(request, 'dashboard/base.html', context)
+    return render(request, 'dashboard/map_leaflet.html', context)
