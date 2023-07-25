@@ -46,9 +46,7 @@ def leaflet_map(request):
     for result in queryset:
         neighborhood = result.neighborhoods.id
 
-        if str(neighborhood) in group_dict:
-            blank = group_dict[str(neighborhood)]
-        else:
+        if str(neighborhood) not in group_dict:
             neighborhood_name = result.neighborhoods.description
             neighborhood_clean = re.sub('[^A-Za-z0-9 /]+', '', neighborhood_name)
 
@@ -63,7 +61,6 @@ def leaflet_map(request):
             }
             group_dict[str(neighborhood)] = neighborhood_dict
 
-        print(result.id)
         if result.tn_davidson_addresses is not None:
             house_json = {'reis_id': result.id
                           ,'lat': result.tn_davidson_addresses.latitude
@@ -72,6 +69,10 @@ def leaflet_map(request):
                           ,'sale_date': result.sale_date
                           ,'sale_price': result.sale_price}
             group_dict[str(neighborhood)]['house_list'].append(house_json)
+        if 'total_sale_count' in group_dict[str(neighborhood)]:
+            group_dict[str(neighborhood)]['total_sale_count'] = group_dict[str(neighborhood)]['total_sale_count'] + 1
+        else:
+            group_dict[str(neighborhood)]['total_sale_count'] = 1
 
 
     print(len(group_dict))

@@ -91,7 +91,7 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             marker{{key}}.setIcon(icon{{value.icon_num}});
             array{{key}}.map(a => a.setStyle({fillColor: 'blue', radius: 30}));
         });
-    marker{{key}}.bindPopup('<p>{{value.name}}</p>');
+    marker{{key}}.bindPopup('<p>{{value.name}}<br>Total Sales: {{value.total_sale_count}}</p>');
     marker{{key}}.bindTooltip("{{value.name}}");
     {% for house_dict in value.house_list %}
         var circle{{house_dict.reis_id}} = L.circle([{{house_dict.lat}}, {{house_dict.long}}], {
@@ -100,7 +100,7 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 radius: 30, weight: 2
             })
             .bindPopup(
-            "{{house_dict.address}}<br>{{house_dict.sale_date}}<br>{{house_dict.sale_price}}")
+            "{{house_dict.address}}<br>{{house_dict.sale_date}}<br>{{house_dict.sale_price}}<br>{{value.name}}")
             .addTo(map);
         array{{key}}.push(circle{{house_dict.reis_id}});
     {% endfor %}
