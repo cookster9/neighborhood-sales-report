@@ -1,7 +1,30 @@
 {% extends "dashboard/base.html" %}
 
+{% block checkbox %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<div class="checkbox-container">
+{% for key, value in groups.items %}
+<label for="{{value.name}}">
+        <input type="checkbox" id={{key}} name="{{value.name}}" value="yes" onchange="toggleNeighborhoodVisibility(this)" checked>  {{value.name}}
+        <br>
+</label>
+{% endfor %}
+</div>
+{% endblock %}
+
 {% block mapscript %}
 <script>
+function toggleNeighborhoodVisibility(obj) {
+  if($(obj).is(":checked")){
+    //alert("Yes checked"); //when checked
+    markerAry[obj.id].addTo(map);
+    markerAry[10*obj.id].map(a => a.addTo(map));
+  }else{
+    //alert("Not checked"); //when not checked
+    markerAry[obj.id].remove();
+    markerAry[10*obj.id].map(a => a.remove());
+  }
+}
 var icon0 = new L.Icon({
   iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-black.png',
   shadowUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-shadow.png',
@@ -78,9 +101,12 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
+var markerAry = {};
 {% for key, value in groups.items %}
     var marker{{key}} = L.marker([{{value.lat}}, {{value.long}}], {icon: icon{{value.icon_num}}}).addTo(map);
+    markerAry[{{key}}]=marker{{key}};
     var array{{key}} = new Array();
+    markerAry[10*{{key}}]=array{{key}};
     marker{{key}}.on('mouseover', function()
         {
             marker{{key}}.setIcon(iconHover);
@@ -91,19 +117,25 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             marker{{key}}.setIcon(icon{{value.icon_num}});
             array{{key}}.map(a => a.setStyle({fillColor: 'blue', radius: 30}));
         });
-    marker{{key}}.bindPopup('<p>{{value.name}}<br>Total Sales: {{value.total_sale_count}}</p>');
     marker{{key}}.bindTooltip("{{value.name}}");
+    var table_html = '';
+    table_html = '<table><tr><th>Address</th><th>Sale Date</th><th>Sale Price</th></tr>';
     {% for house_dict in value.house_list %}
         var circle{{house_dict.reis_id}} = L.circle([{{house_dict.lat}}, {{house_dict.long}}], {
                 color: 'blue',
                 fillOpacity: 0.5,
-                radius: 30, weight: 2
+                radius: 30, weight: 2,
+                title: '{{house_dict.address}}'
             })
             .bindPopup(
             "{{house_dict.address}}<br>{{house_dict.sale_date}}<br>{{house_dict.sale_price}}<br>{{value.name}}")
+            .bindTooltip('{{house_dict.address}}')
             .addTo(map);
         array{{key}}.push(circle{{house_dict.reis_id}});
+        table_html = table_html + '<tr><td>'+'{{house_dict.address}}'+'</td><td>'+'{{house_dict.sale_date}}'+'</td><td>'+'{{house_dict.sale_price}}'+'</td></tr>'
     {% endfor %}
+    table_html = table_html+'</table>';
+    marker{{key}}.bindPopup(table_html, {offset: [0, -75]});
 
 {% endfor %}
 </script>

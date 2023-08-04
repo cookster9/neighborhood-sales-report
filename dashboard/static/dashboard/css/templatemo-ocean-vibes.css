@@ -93,12 +93,16 @@ a {
     font-size: 1.5rem;   
     margin-left: 130px;
 }
+.checkbox-container{
+border:2px solid #ccc;
+width:500px; height: 100px;
+overflow-y: scroll;
+}
 .map-container{
     padding: 10px 70px 10px;
     height: 80vh;
     text-align:center;
 }
-
 #map-container-id {
     height: 100%;
     width: 100%;
