@@ -4,11 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nash Neighborhoods</title>
+    <title>Nashville Recent Home Sales</title>
     <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap" rel="stylesheet"> <!-- https://fonts.google.com/ -->
     <link rel="stylesheet" href="{% static 'dashboard/fontawesome/css/all.min.css' %}"> <!-- https://fontawesome.com/ -->
-    <link rel="stylesheet" href="{% static 'dashboard/css/magnific-popup.css' %}">
-    <link rel="stylesheet" href="{% static 'dashboard/css/templatemo-ocean-vibes.css' %}">
+    <link rel="stylesheet" href="{% static 'dashboard/css/base-map.css' %}">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
      crossorigin=""/>
@@ -17,33 +16,26 @@
      crossorigin=""></script>
 </head>
 <body>
-    <div class="header-div">
-        <header class="tm-site-header">
-            <h1 class="tm-mt-0 tm-mb-15"><span class="tm-color-primary">Nashville</span>
-                <span class="tm-color-gray-2">Neighborhoods</span></h1>
-        </header>
+    <div class="header-row">
+        <div class="header-label">
+            <header>
+                <h1><span class="color-primary">Nashville Recent Home Sales</span></h1>
+            </header>
+        </div>
+        <div class = "header-links">
+            <div class = "header-link" ><a href="/">home</a></div>
+            <div class = "header-link" ><a href="/about">about</a></div>
+            <div class = "header-link" ><a href="/contact">contact</a></div>
+        </div>
     </div>
 
-    <div id="map" class="map-container"></div>
-    {% block checkbox %}
-        document.write('Checkbox goes here');
+    {% block content %}
+        document.write('Map stuff goes here');
     {% endblock %}
-
-<footer class="tm-footer">
-        <span>Copyright &copy; 2020 Your Company</span>
-        <span>Web Designed by
-        <a href="https://templatemo.com" title="free website templates" target="_parent" rel="nofollow">TemplateMo</a></span>
+<footer>
+  <div class="ad"></div>
 </footer>
-
-    <script src="{% static 'dashboard/js/jquery-3.4.1.min.js' %}"></script>
-    <script src="{% static 'dashboard/js/imagesloaded.pkgd.min.js' %}"></script>
-    <script src="{% static 'dashboard/js/isotope.pkgd.min.js' %}"></script>
-    <script src="{% static 'dashboard/js/jquery.magnific-popup.min.js' %}"></script>
-    <script src="{% static 'dashboard/js/templatemo-script.js' %}"></script>
 </body>
 {% block mapscript %}
-<script>
-    document.write('Hello, World!');
-</script>
 {% endblock %}
 </html>

@@ -1,0 +1,138 @@
+html { overflow-x: hidden; }
+
+body {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 19px;
+    line-height: 1em;
+    overflow-x: hidden;
+}
+
+p, em, span, a, address { color: #848586; }
+
+h2, p {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+a:hover, a.active { color: #309AFD; }
+
+h1 { font-size: 2rem; }
+div { box-sizing: border-box;}
+
+body{
+    margin: 0;
+    padding: 0;
+}
+
+.color-primary{
+    color: #5394fc;
+}
+
+ul{
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    list-style-type: none;
+    padding-inline-start: 0px;
+    margin-block-start: 0em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+}
+
+li{
+    padding: 0px 0px 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+}
+
+label{
+    text-overflow: ellipsis;
+}
+
+a { 
+    text-decoration: none; 
+    transition: all 0.3s ease;
+}
+
+.site-header {
+    padding: 10px 70px 0px;
+    margin: auto;
+}
+
+.header-row{
+    display: flex;
+    flex-direction: row;
+    padding: 10px 70px 0px;
+    margin: auto;
+}
+
+.header-label{
+    margin: auto;
+    width: 50%;
+}
+
+.header-links{
+    display: flex;
+    flex-direction: row;
+    margin: auto;
+    width: 50%;
+}
+
+.header-link{
+    margin: auto;
+}
+
+.sub-header {
+    padding: 0px 70px 0px;
+    width: 100%;
+    font-size: 0.875em;
+}
+
+.full-container{
+    padding: 10px 70px 10px;
+    height: 75vh;
+    text-align:center;
+}
+.outer-container{
+    float: left;
+    width: 75%;
+    height: 100%
+}
+
+.checkbox-input{
+    font-size: 14px;
+    min-width: 0;
+
+}
+
+.checkbox-container{
+    border:2px solid #ccc;
+    overflow-y: scroll;
+    margin-left: 75%;
+    height: 100%
+}
+.map-container{
+    height: 100%;
+    width: 100%;
+}
+
+#map-container-id {
+    height: 100%;
+    width: 100%;
+}
+
+
+footer{
+    display: flex
+}
+
+.ad{
+    height:100px;
+    width: 50%;
+    margin: auto;
+    border-style: solid;
+}

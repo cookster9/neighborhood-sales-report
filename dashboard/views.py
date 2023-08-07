@@ -13,23 +13,18 @@ import re
 
 module_dir = os.path.dirname(__file__)
 
-# /map
-def interactive_map(request):
-    return render(request, 'dashboard/base-map.html', {})
+# /about
+def about_page(request):
+    context = {}
+    return render(request, 'dashboard/about.html', context)
+
+# /contact
+def contact_page(request):
+    context = {}
+    return render(request, 'dashboard/contact.html', context)
+
 
 # /
-def map_rendered(request):
-    file_path = module_dir + '/static/dashboard/json/total_sales.json'  # '/templates/dashboard/base-map.html'
-    data_file = open(file_path, 'rb')  # I used 'rb' here since I got an 'gbk' decode error
-    data = data_file.read().decode()
-    # map_html = Path('/dashboard/templates/dashboard/base-map.html').read_text()
-    print(data)
-    context = {}
-    context["sales_data"] = json.loads(data)
-    print(context)
-    return render(request, 'dashboard/map_rendered.html', context)
-
-# /data
 def leaflet_map(request):
     # Get the current date and calculate the date six weeks ago
     now = datetime.now()
@@ -67,7 +62,8 @@ def leaflet_map(request):
                           ,'long': result.tn_davidson_addresses.longitude
                           ,'address': result.location
                           ,'sale_date': result.sale_date
-                          ,'sale_price': result.sale_price}
+                          ,'sale_price': result.sale_price
+                          ,'square_footage': result.square_footage}
             group_dict[str(neighborhood)]['house_list'].append(house_json)
         if 'total_sale_count' in group_dict[str(neighborhood)]:
             group_dict[str(neighborhood)]['total_sale_count'] = group_dict[str(neighborhood)]['total_sale_count'] + 1
@@ -78,10 +74,13 @@ def leaflet_map(request):
     print(len(group_dict))
     NASHVILLE_LATITUDE = 36.164577
     NASHVILLE_LONGITUDE = -86.776949
+
+    sorted_by_name = sorted(group_dict.items(), key=lambda x:x[1]['name'])
+    sorted_dict = dict(sorted_by_name)
     context = {
         'nash_lat': NASHVILLE_LATITUDE
         ,'nash_long': NASHVILLE_LONGITUDE
-        ,'groups': group_dict
+        ,'groups': sorted_dict
     }
 
     return render(request, 'dashboard/map_leaflet.html', context)

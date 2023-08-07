@@ -34,6 +34,7 @@ class RealEstateInfoScrape(models.Model):
     sale_date = models.DateField(blank=True, null=True)
     year_week = models.IntegerField(blank=True, null=True)
     tn_davidson_addresses = models.ForeignKey(TnDavidsonAddresses, models.DO_NOTHING, blank=True, null=True)
+    square_footage = models.CharField(max_length=50, blank=True, null=True)
 
     class Meta:
         managed = False

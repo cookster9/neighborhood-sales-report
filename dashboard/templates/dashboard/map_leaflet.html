@@ -1,14 +1,26 @@
 {% extends "dashboard/base.html" %}
 
-{% block checkbox %}
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<div class="checkbox-container">
-{% for key, value in groups.items %}
-<label for="{{value.name}}">
-        <input type="checkbox" id={{key}} name="{{value.name}}" value="yes" onchange="toggleNeighborhoodVisibility(this)" checked>  {{value.name}}
-        <br>
-</label>
-{% endfor %}
+{% block content %}
+<div class="sub-header">
+    <p>Nashville home sales in the last 6 weeks</p>
+</div>
+<div id="full-container" class="full-container">
+    <div class="outer-container">
+        <div id="map" class="map-container"></div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <div class="checkbox-container">
+        <ul>
+        {% for key, value in groups.items %}
+        <li>
+            <input class="checkbox-input" type="checkbox" id={{key}} name="{{value.name}}" value="yes" onchange="toggleNeighborhoodVisibility(this)" checked>
+        <label for="{{value.name}}">
+             {{value.name}}
+        </label>
+        </li>
+        {% endfor %}
+        </ul>
+    </div>
 </div>
 {% endblock %}
 
@@ -119,7 +131,7 @@ var markerAry = {};
         });
     marker{{key}}.bindTooltip("{{value.name}}");
     var table_html = '';
-    table_html = '<table><tr><th>Address</th><th>Sale Date</th><th>Sale Price</th></tr>';
+    table_html = '<table><tr><th>Address</th><th>Sale Date</th><th>Sale Price</th><th>Sq Ft</th></tr>';
     {% for house_dict in value.house_list %}
         var circle{{house_dict.reis_id}} = L.circle([{{house_dict.lat}}, {{house_dict.long}}], {
                 color: 'blue',
@@ -132,7 +144,7 @@ var markerAry = {};
             .bindTooltip('{{house_dict.address}}')
             .addTo(map);
         array{{key}}.push(circle{{house_dict.reis_id}});
-        table_html = table_html + '<tr><td>'+'{{house_dict.address}}'+'</td><td>'+'{{house_dict.sale_date}}'+'</td><td>'+'{{house_dict.sale_price}}'+'</td></tr>'
+        table_html = table_html + '<tr><td>'+'{{house_dict.address}}'+'</td><td>'+'{{house_dict.sale_date}}'+'</td><td>'+'{{house_dict.sale_price}}'+'</td><td>'+'{{house_dict.square_footage}}'+'</td></tr>'
     {% endfor %}
     table_html = table_html+'</table>';
     marker{{key}}.bindPopup(table_html, {offset: [0, -75]});
