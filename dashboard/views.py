@@ -21,7 +21,7 @@ def about_page(request):
 # /contact
 def contact_page(request):
     context = {}
-    return render(request, 'dashboard/contact.html', context)
+    return render(request, 'dashboard/contact_placeholder.html', context)
 
 
 # /
