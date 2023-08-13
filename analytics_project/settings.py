@@ -33,6 +33,8 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS').split(",")
 SECURE_SSL_REDIRECT = config('SSL_REDIRECT')
+PREPEND_WWW = config('PREPEND_WWW', default=True, cast=bool)
+BASE_URL = config('BASE_URL')
 
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 
