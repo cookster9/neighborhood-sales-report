@@ -32,9 +32,9 @@ SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS').split(",")
-SECURE_SSL_REDIRECT = config('SSL_REDIRECT')
-PREPEND_WWW = config('PREPEND_WWW', default=True, cast=bool)
-BASE_URL = config('BASE_URL')
+SECURE_SSL_REDIRECT = config('SSL_REDIRECT', default=False, cast=bool)
+PREPEND_WWW = config('PREPEND_WWW', default=False, cast=bool)
+BASE_URL = config('BASE_URL', default='localhost')
 
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 
@@ -93,6 +93,15 @@ DATABASES = {
         "USER": config('DB_USER'),
         "PASSWORD": config('DB_PASSWORD'),
         "HOST": config('DB_HOST')
+    }
+}
+
+# https://docs.djangoproject.com/en/4.2/topics/cache/
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.db.DatabaseCache",
+        "LOCATION": "my_cache_table",
+        "TIMEOUT": 60 * 60 * 12,
     }
 }
 
