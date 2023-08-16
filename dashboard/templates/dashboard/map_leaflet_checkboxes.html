@@ -1,11 +1,25 @@
 {% extends "dashboard/base.html" %}
 {% block content %}
 <div class="sub-header">
-    <p>A map of Nashville home sales in the last 6 weeks grouped by neighborhood</p>
+    <p>Nashville home sales in the last 6 weeks grouped by neighborhood</p>
 </div>
 <div id="full-container" class="full-container">
     <div class="outer-container">
         <div id="map" class="map-container"></div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <!-- change css too -->
+    <div class="checkbox-container">
+        <ul>
+        {% for key, value in groups.items %}
+        <li>
+            <input class="checkbox-input" type="checkbox" id={{key}} name="{{value.name}}" value="yes" onchange="toggleNeighborhoodVisibility(this)" checked>
+        <label for="{{value.name}}">
+             {{value.name}}
+        </label>
+        </li>
+        {% endfor %}
+        </ul>
     </div>
 </div>
 {% endblock %}
