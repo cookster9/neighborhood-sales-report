@@ -64,6 +64,8 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "analytics_project.urls"
 
+CSRF_TRUSTED_ORIGINS = ["https://nashvillerecenthomesales.com", "https://www.nashvillerecenthomesales.com"]
+
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
