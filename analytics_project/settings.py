@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "dashboard",
-    'mod_wsgi.server'
+    'mod_wsgi.server',
 ]
 
 MIDDLEWARE = [
@@ -147,3 +147,12 @@ print(STATIC_ROOT)
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# email
+DEFAULT_FROM_EMAIL = "info@nashvillerecenthomesales.com"
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"  # new
+EMAIL_HOST = "smtp.sendgrid.net"  # new
+EMAIL_HOST_USER = "apikey"  # new
+EMAIL_HOST_PASSWORD = config('SENDGRID_KEY')  # new
+EMAIL_PORT = 587  # new
+EMAIL_USE_TLS = True  # new

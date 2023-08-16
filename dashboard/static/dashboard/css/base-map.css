@@ -94,15 +94,12 @@ a {
 
 .full-container{
     padding: 10px 70px 10px;
-    height: 75vh;
+    height: 70vh;
     text-align:center;
 }
 
 .about-container{
     line-height: 1.8em;
-    text-align:center;
-    height: 50vh;
-    padding: 10px 70px 10px;
 }
 
 .outer-container{

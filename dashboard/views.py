@@ -1,9 +1,13 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.http import HttpResponse, HttpResponseRedirect
+from django.core.mail import send_mail, BadHeaderError
 from dashboard.models import RealEstateInfoScrape
 from django.core.cache import cache
 import os
 from datetime import datetime, timedelta
 import re
+from .forms import ContactForm
+from django.conf import settings
 
 module_dir = os.path.dirname(__file__)
 
@@ -14,9 +18,26 @@ def about_page(request):
 
 # /contact
 def contact_page(request):
-    context = {}
-    return render(request, 'dashboard/contact_placeholder.html', context)
+    if request.method == "GET":
+        form = ContactForm()
+    else:
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            subject = form.cleaned_data["subject"]
+            app_email = settings.DEFAULT_FROM_EMAIL
+            user_email = form.cleaned_data["user_email"]
+            message = user_email+'<br>'+form.cleaned_data['message']
+            try:
+                send_mail(subject, message,app_email,[app_email])
+            except BadHeaderError:
+                return HttpResponse("Invalid header found.")
+            return redirect("success")
+    return render(request, 'dashboard/contact.html', {"form": form})
 
+# /success
+def success(request):
+    context = {}
+    return render(request, 'dashboard/success.html', context)
 
 # /
 def leaflet_map(request):
