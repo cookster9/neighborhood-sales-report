@@ -39,6 +39,7 @@ BASE_URL = config('BASE_URL', default='localhost')
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 
+
 # Application definition
 
 INSTALLED_APPS = [
