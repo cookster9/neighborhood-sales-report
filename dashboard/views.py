@@ -25,8 +25,8 @@ def contact_page(request):
         if form.is_valid():
             subject = form.cleaned_data["subject"]
             app_email = settings.DEFAULT_FROM_EMAIL
-            user_email = form.cleaned_data["user_email"]
-            message = user_email+'<br>'+form.cleaned_data['message']
+            your_email = form.cleaned_data["your_email"]
+            message = your_email+'<br>'+form.cleaned_data['message']
             try:
                 send_mail(subject, message,app_email,[app_email])
             except BadHeaderError:
@@ -52,10 +52,11 @@ def leaflet_map(request):
         queryset = RealEstateInfoScrape.objects.filter(
             sale_date__gt=six_weeks_ago,
             property_use='SINGLE FAMILY'
-        ).exclude(sale_price='$0')
+        ).exclude(sale_price='$0').order_by('-sale_date')
 
         # Access the query results
         group_dict = {}
+        top_dict = {}
         for result in queryset:
             neighborhood = result.neighborhoods.id
 
@@ -83,6 +84,8 @@ def leaflet_map(request):
                               ,'sale_price': result.sale_price
                               ,'square_footage': result.square_footage}
                 group_dict[str(neighborhood)]['house_list'].append(house_json)
+                if len(top_dict) < 100:
+                    top_dict[len(top_dict)] = house_json
             if 'total_sale_count' in group_dict[str(neighborhood)]:
                 group_dict[str(neighborhood)]['total_sale_count'] = group_dict[str(neighborhood)]['total_sale_count'] + 1
             else:
@@ -99,6 +102,7 @@ def leaflet_map(request):
             'nash_lat': NASHVILLE_LATITUDE
             ,'nash_long': NASHVILLE_LONGITUDE
             ,'groups': sorted_dict
+            ,'top100': top_dict
         }
         cache.set('map',context)
     else:

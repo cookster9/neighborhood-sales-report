@@ -33,6 +33,7 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS').split(",")
 SECURE_SSL_REDIRECT = config('SSL_REDIRECT', default=False, cast=bool)
+SECURE_SSL_HOST="https://www.nashvillerecenthomesales.com:443"
 PREPEND_WWW = config('PREPEND_WWW', default=False, cast=bool)
 BASE_URL = config('BASE_URL', default='localhost')
 

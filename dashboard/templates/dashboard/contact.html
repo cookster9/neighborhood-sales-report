@@ -2,14 +2,16 @@
 
 {% block content %}
 <!-- templates/email.html -->
-<div class="full-container">
-    <h1>Contact Us</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <div class="form-actions">
-          <button type="submit">Send</button>
-        </div>
-    </form>
+<div class="other-container top-content top-background">
+    <h2 class="other-header color-primary">Contact Us</h2>
+    <div class="form-group">
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_div }}
+            <div class="form-actions">
+              <button type="submit">Send</button>
+            </div>
+        </form>
+    </div>
 </div>
 {% endblock %}

@@ -1,34 +1,41 @@
 html { overflow-x: hidden; }
 
+h1 { font-size: 1.8rem; }
+
+h2{
+    margin-top: 0;
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+    line-height: 1em;
+}
+
 body {
     font-family: 'Source Sans Pro', sans-serif;
     font-size: 19px;
     line-height: 1em;
     overflow-x: hidden;
-}
-
-p, em, span, a, address { color: #848586; }
-
-h2, p {
-    margin-top: 0;
-    margin-bottom: 0;
-}
-
-a:hover, a.active { color: #309AFD; }
-
-h1 { font-size: 1.8rem; }
-div { box-sizing: border-box;}
-
-body{
     margin: 0;
     padding: 0;
 }
 
-.color-primary{
-    color: #5394fc;
+p {
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
-ul{
+p, em, span, a, address, h3 { color: #e6edfc; }
+
+a:hover, a.active { color: #309AFD; }
+
+a {
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+.color-primary{
+    color: #e6edfc;
+}
+
+.checkbox-container ul{
     display: flex;
     flex-direction: column;
     text-align: left;
@@ -38,79 +45,152 @@ ul{
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    width: 100%;
 }
 
-li{
+.checkbox-container li{
     padding: 0px 0px 5px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    width: 100%;
 }
 
 label{
     text-overflow: ellipsis;
 }
 
-a { 
-    text-decoration: none; 
-    transition: all 0.3s ease;
-    padding: 10px;
+form{
+    display: flex;
+    flex-direction: column;
 }
 
-.site-header {
-    padding: 10px 35px 0px;
-    margin: auto;
+.top-background{
+    background-color: #202536;
+}
+
+.top-content{
+    height:50vh;
+    padding: 50px;
+    color: #e6edfc;
+}
+
+.landing{
+    display: flex;
+    padding: 10px;
+    height: 100%;
+}
+
+.landing-box{
+    flex: 1;
+}
+
+.second-background{
+    background-color: #d4d6d9;
+}
+
+.second-content{
+    height:85vh;
 }
 
 .header-row{
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
-    padding: 10px 35px 0px;
-    margin: auto;
+    padding: 0px 35px 0px;
+}
+
+.header-span{
+    margin: 2px 0px;
+    display: inline-block;
+    white-space:pre;
 }
 
 .header-label{
-    margin: auto;
     min-width: 30vw;
 }
 
 .header-links{
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
+    gap: 10px;
     margin: auto;
     min-width: 30vw;
-
 }
 
 .header-link{
     margin: auto;
     border-style: solid;
     border-radius: 5px;
+    border-color: #e6edfc;
+    padding: 8px;
+    text-align:center;
+    flex: 1
+}
+
+.other-header{
+    margin: 0px;
+    font-size: 1.875em;
+    padding: 10px 50px;
+}
+
+.other-container{
+    line-height: 1.8em;
+    padding: 0px 35px;
 }
 
 .sub-header {
-    padding: 0px 35px 0px;
-    width: 100%;
-    font-size: 0.875em;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 10px 35px 10px 35px;
+    text-align: center;
+    white-space: normal;
 }
 
-.full-container{
-    padding: 10px 35px 10px;
-    height: 70vh;
+.sub-header p{
+color: #facea7;
+}
+
+.map-container{
+    padding: 10px 35px 10px 35px;
     text-align:center;
+    height: 75vh;
 }
 
-.about-container{
-    line-height: 1.8em;
+#map{
+    height: 75vh;
 }
 
-.outer-container{
-    float: left;
-    width: 100%;
-    height: 100%
+.tableFixHead {
+        max-height: 300px;
+        overflow: auto;
+  }
+
+.tableFixHead table{
+    border: 1px solid;
+  }
+
+.tableFixHead td{
+  }
+
+.form-group{
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group div{
+    flex: 1;
+    display: flex;
+}
+
+.form-group label{
+    color: #e6edfc;
+    justify-content: flex-start;
+    width: 100px;
+    text-overflow: ellipsis;
+}
+
+.form-group input{
+    justify-content: flex-end;
 }
 
 .checkbox-input{
@@ -125,16 +205,6 @@ a {
     margin-left: 75%;
     height: 100%;
 }
-.map-container{
-    height: 100%;
-    width: 100%;
-}
-
-#map-container-id {
-    height: 100%;
-    width: 100%;
-}
-
 
 footer{
     display: flex

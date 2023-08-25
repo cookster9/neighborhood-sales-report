@@ -1,17 +1,52 @@
 {% extends "dashboard/base.html" %}
 {% block content %}
-<div class="sub-header">
-    <p>A map of Nashville SINGLE FAMILY home sales in the last 6 weeks grouped by neighborhood</p>
+
+<div class="second-content">
+    <div class="map-container">
+        <div id="map"></div>
+    </div>
 </div>
-<div id="full-container" class="full-container">
-    <div class="outer-container">
-        <div id="map" class="map-container"></div>
+<div class="top-content top-background">
+    <div class="sub-header">
+        <h2>Nashville Neighborhood Sales</h2>
+    </div>
+    <div class="landing">
+    <div class="landing-box">
+        <h3>This site shows SINGLE FAMILY homes sold in Nashville in the last 6 weeks.</h3>
+        <p>The list to the right shows the 100 most recently sold single family homes.
+            Click an address and the map will pan to that location.</p>
+        <br>
+        <p>The map shows all the single family homes sold in the last 6 weeks.
+            The large icons are neighborhoods and the small icons are home sales.</p>
+    </div>
+    <div class="landing-box">
+        <div class="tableFixHead">
+              <table>
+                  <tr>
+                    <th>Address</th>
+                    <th>Price</th>
+                    <th>Sale Date</th>
+                  </tr>
+                  {% for key, value in top100.items %}
+                    <tr>
+                        <td><button onclick = "centerMapOnPost({{value.lat}},{{value.long}})" > {{value.address}} </button></td>
+                        <td>{{value.sale_price}}</td>
+                        <td>{{value.sale_date}}</td>
+                    </tr>
+                  {% endfor %}
+              </table>
+            </div>
+    </div>
     </div>
 </div>
 {% endblock %}
 
 {% block mapscript %}
 <script>
+function centerMapOnPost(lat,long) {
+    map.panTo([lat,long]);
+    map.setZoom(16);
+}
 function toggleNeighborhoodVisibility(obj) {
   if($(obj).is(":checked")){
     //alert("Yes checked"); //when checked
@@ -100,6 +135,7 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 var markerAry = {};
+var houseAry = {};
 {% for key, value in groups.items %}
     var marker{{key}} = L.marker([{{value.lat}}, {{value.long}}], {icon: icon{{value.icon_num}}}).addTo(map);
     markerAry[{{key}}]=marker{{key}};
@@ -133,8 +169,10 @@ var markerAry = {};
         table_html = table_html + '<tr><td>'+'{{house_dict.address}}'+'</td><td>'+'{{house_dict.sale_date}}'+'</td><td>'+'{{house_dict.sale_price}}'+'</td><td>'+'{{house_dict.square_footage}}'+'</td></tr>'
     {% endfor %}
     table_html = table_html+'</table>';
-    marker{{key}}.bindPopup(table_html, {offset: [0, -75]});
+    marker{{key}}.bindPopup(table_html, {offset: [0, 0]});
 
 {% endfor %}
 </script>
+
+
 {% endblock %}
