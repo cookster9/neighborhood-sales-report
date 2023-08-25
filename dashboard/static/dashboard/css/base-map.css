@@ -35,25 +35,6 @@ a {
     color: #e6edfc;
 }
 
-.checkbox-container ul{
-    display: flex;
-    flex-direction: column;
-    text-align: left;
-    list-style-type: none;
-    padding-inline-start: 0px;
-    margin-block-start: 0em;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.checkbox-container li{
-    padding: 0px 0px 5px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
 label{
     text-overflow: ellipsis;
 }
@@ -68,15 +49,14 @@ form{
 }
 
 .top-content{
-    height:50vh;
-    padding: 50px;
+    height:60vh;
+    padding: 5px 50px;
     color: #e6edfc;
 }
 
 .landing{
     display: flex;
     padding: 10px;
-    height: 100%;
 }
 
 .landing-box{
@@ -88,7 +68,7 @@ form{
 }
 
 .second-content{
-    height:85vh;
+    display: flex;
 }
 
 .header-row{
@@ -152,12 +132,11 @@ color: #facea7;
 
 .map-container{
     padding: 10px 35px 10px 35px;
-    text-align:center;
-    height: 75vh;
 }
 
 #map{
     height: 75vh;
+    width: 90vw;
 }
 
 .tableFixHead {
@@ -206,6 +185,25 @@ color: #facea7;
     height: 100%;
 }
 
+.checkbox-container ul{
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    list-style-type: none;
+    padding-inline-start: 0px;
+    margin-block-start: 0em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.checkbox-container li{
+    padding: 0px 0px 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 footer{
     display: flex
 }
@@ -216,3 +214,4 @@ footer{
     margin: auto;
     border-style: solid;
 }
+
