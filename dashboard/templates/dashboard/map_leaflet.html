@@ -43,9 +43,8 @@
 
 {% block mapscript %}
 <script>
-function centerMapOnPost(lat,long) {
-    map.panTo([lat,long]);
-    map.setZoom(16);
+function centerMapOnPost(house_lat,house_long) {
+    map.setView([house_lat,house_long], 16);
 }
 function toggleNeighborhoodVisibility(obj) {
   if($(obj).is(":checked")){
