@@ -1,4 +1,5 @@
 {% extends "dashboard/base.html" %}
+{% load static %}
 {% block content %}
 
 <div class="second-content">
@@ -8,12 +9,14 @@
 </div>
 <div class="top-content top-background">
     <div class="sub-header">
-        <h2>Nashville Neighborhood Sales</h2>
+        <button onclick = "scrollToBottom('topHeader')"><img src="{% static 'dashboard/images/arrow.png' %}" alt="arrowbutton" border="0" /></button>
+        <h2 id="topHeader">See Nashville Most Recent Neighborhood Sales</h2>
+        <button onclick = "scrollToBottom('topHeader')"><img src="{% static 'dashboard/images/down-arrow.png' %}" alt="arrowbutton" border="0" /></button>
     </div>
     <div class="landing">
     <div class="landing-box">
         <h3>This site shows SINGLE FAMILY homes sold in Nashville in the last 6 weeks.</h3>
-        <p>The list to the right shows the 100 most recently sold single family homes.
+        <p>The list shows the 100 most recently sold single family homes.
             Click an address and the map will pan to that location.</p>
         <br>
         <p>The map shows all the single family homes sold in the last 6 weeks.
@@ -43,6 +46,10 @@
 
 {% block mapscript %}
 <script>
+function scrollToBottom(id){
+    const element=document.getElementById(id);
+    element.scrollIntoView({behavior: "smooth"});
+}
 function centerMapOnPost(house_lat,house_long) {
     map.setView([house_lat,house_long], 16);
 }

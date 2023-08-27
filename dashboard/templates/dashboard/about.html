@@ -3,11 +3,17 @@
 {% block content %}
 <div class="other-container top-content top-background">
   <h2 class="other-header color-primary">About This Site</h2>
-  <p>I wanted more recent view of home sales than what Zillow could show. <br>Also, I wanted something grouped by neighborhood.
-    So I made this.</p>
-  <p>The big icons are Nashville neighborhoods. Click them to get a list of home sales.
-    <br>The smaller icons are the sold homes.</p>
-  <p>It currently only shows Single Family home sales</p>
-  <p>The data is obtained from padctn.org on a weekly basis</p>
+  <div class="about-intro">
+                <p>
+                    This website shows single family home sales in the past 6 weeks, grouped by neighborhood. I
+                    found that Zillow and other sites had sales from too far back to be useful. Also it was hard to tell if
+                    homes are in the same neighborhood or not on those sites. It came from a desire to see if the real estate
+                    market is moving right now or not.
+                </p>
+                <p>
+                    The data is scraped from padctn.org on a rolling basis. The dataset is fully refreshed about once a week.
+                    I started scraping in May 2023, so that's my baseline.
+                </p>
+            </div>
 </div>
 {% endblock %}

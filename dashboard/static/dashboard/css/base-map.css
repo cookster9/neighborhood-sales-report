@@ -56,11 +56,14 @@ form{
 
 .landing{
     display: flex;
+    flex-wrap: wrap;
     padding: 10px;
 }
 
 .landing-box{
     flex: 1;
+    min-width: 40vh;
+    padding: 5px 0px;
 }
 
 .second-background{
@@ -86,16 +89,17 @@ form{
 }
 
 .header-label{
-    min-width: 30vw;
+    min-width: 60vw;
+    flex:2;
 }
 
 .header-links{
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
     gap: 10px;
     margin: auto;
     min-width: 30vw;
+    flex:1;
 }
 
 .header-link{
@@ -125,10 +129,26 @@ form{
     padding: 10px 35px 10px 35px;
     text-align: center;
     white-space: normal;
+    display: flex;
+    justify-content: space-evenly;
 }
 
 .sub-header p{
 color: #facea7;
+}
+
+.sub-header button{
+    border-radius: 3px;
+    height: 10vh;
+    width: 10vh;
+    padding: 0px;
+}
+
+.sub-header img{
+    color: white;
+    background-color: #202536;
+    height: 10vh;
+    width: 10vh;
 }
 
 .map-container{
@@ -149,11 +169,29 @@ color: #facea7;
     border: 1px solid;
   }
 
-.tableFixHead td{
+  .tableFixHead td{
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
   }
 
+.tableFixHead td:nth-child(1) {
+    width: 60%;
+     }
+
+.tableFixHead td:nth-child(2) {
+    width: 20%;
+    max-width: 150px;
+     }
+
+.tableFixHead td:nth-child(3) {
+    width: 20%;
+    max-width: 150px;
+     }
+
 .tableFixHead button {
-  width: 150px;
+  min-width: 10vw;
+  max-width: 15vw;
   overflow: hidden;
   white-space: nowrap;
   display: block;
@@ -213,8 +251,12 @@ color: #facea7;
     white-space: nowrap;
 }
 
-footer{
-    display: flex
+footer p{
+    color: #031842;
+}
+
+footer a{
+    color: #031842;
 }
 
 .nrhs-ad{
