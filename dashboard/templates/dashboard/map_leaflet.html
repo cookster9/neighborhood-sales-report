@@ -9,9 +9,19 @@
 </div>
 <div class="top-content top-background">
     <div class="sub-header">
-        <button onclick = "scrollToBottom('topHeader')"><img src="{% static 'dashboard/images/arrow.png' %}" alt="arrowbutton" border="0" /></button>
+        <button onclick = "scrollToElement('site-header')">
+            <img class="uparrow" src="{% static 'dashboard/images/arrow-down.png' %}" alt="arrowbutton" border="0" />
+        </button>
+        <button onclick = "scrollToElement('topHeader')">
+            <img src="{% static 'dashboard/images/arrow-down.png' %}" alt="arrowbutton" border="0" />
+        </button>
         <h2 id="topHeader">See Nashville Most Recent Neighborhood Sales</h2>
-        <button onclick = "scrollToBottom('topHeader')"><img src="{% static 'dashboard/images/down-arrow.png' %}" alt="arrowbutton" border="0" /></button>
+        <button onclick = "scrollToElement('site-header')">
+            <img class="uparrow" src="{% static 'dashboard/images/arrow-down.png' %}" alt="arrowbutton" border="0" />
+        </button>
+        <button onclick = "scrollToElement('topHeader')">
+            <img src="{% static 'dashboard/images/arrow-down.png' %}" alt="arrowbutton" border="0" />
+        </button>
     </div>
     <div class="landing">
     <div class="landing-box">
@@ -46,7 +56,7 @@
 
 {% block mapscript %}
 <script>
-function scrollToBottom(id){
+function scrollToElement(id){
     const element=document.getElementById(id);
     element.scrollIntoView({behavior: "smooth"});
 }

@@ -30,6 +30,7 @@ a:hover, a.active { color: #309AFD; }
 a {
     text-decoration: none;
     transition: all 0.3s ease;
+    cursor: pointer;
 }
 .color-primary{
     color: #e6edfc;
@@ -52,6 +53,10 @@ form{
     height: auto;
     padding: 5px 50px;
     color: #e6edfc;
+}
+
+.uparrow{
+    transform: rotate(180deg);
 }
 
 .landing{
@@ -119,18 +124,22 @@ form{
 }
 
 .other-container{
-    line-height: 1.8em;
+    line-height: 1em;
     padding: 35px 35px;
+}
+
+.about p{
+
 }
 
 .sub-header {
     margin-top: 10px;
     margin-bottom: 10px;
-    padding: 10px 35px 10px 35px;
     text-align: center;
     white-space: normal;
     display: flex;
     justify-content: space-evenly;
+    align-items: center;
 }
 
 .sub-header p{
@@ -142,6 +151,7 @@ color: #facea7;
     height: 10vh;
     width: 10vh;
     padding: 0px;
+    cursor: pointer;
 }
 
 .sub-header img{
@@ -257,6 +267,30 @@ footer p{
 
 footer a{
     color: #031842;
+}
+
+.overlay {
+  position: fixed; /* Sit on top of the page content */
+  display: none; /* Hidden by default */
+  width: 100%; /* Full width (cover the whole page) */
+  height: 100%; /* Full height (cover the whole page) */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5); /* Black background with opacity */
+  z-index: 999999; /* Specify a stack order in case you're using a different order for other elements */
+}
+
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
 .nrhs-ad{
