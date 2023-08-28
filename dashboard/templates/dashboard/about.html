@@ -3,17 +3,22 @@
 {% block content %}
 <div class="other-container top-content top-background">
   <h2 class="other-header color-primary">About This Site</h2>
-  <div class="about-intro">
-                <p>
-                    This website shows single family home sales in the past 6 weeks, grouped by neighborhood. I
-                    found that Zillow and other sites had sales from too far back to be useful. Also it was hard to tell if
-                    homes are in the same neighborhood or not on those sites. It came from a desire to see if the real estate
-                    market is moving right now or not.
-                </p>
-                <p>
-                    The data is scraped from padctn.org on a rolling basis. The dataset is fully refreshed about once a week.
-                    I started scraping in May 2023, so that's my baseline.
-                </p>
-            </div>
+  <div class="about">
+    <p>
+        This website shows single family home sales in the past 6 weeks, grouped by neighborhood. I
+        find that Zillow's home sale maps are too cluttered. Also, Zillow doesn't have a way to group
+        by neighborhood. So I set out to make a more dedicated home sales map.
+        This all came from a desire to see if the real estate market is heating up or not.
+    </p>
+    <br>
+    <p>
+        The sale dates are obtained from <a href="https://www.padctn.org" target="_blank">padctn.org</a>.
+        That site has some basic information on properties in Nashville,
+        including the last sale date. I pulled a baseline of data in May 2023.
+        I check <a href="padctn.org" target="_blank">padctn.org</a>
+        about once a week for updates. If the last sale date for a property has changed from the baseline
+        , then I know there was a sale.
+    </p>
+  </div>
 </div>
 {% endblock %}

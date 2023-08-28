@@ -84,7 +84,7 @@ form{
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
-    padding: 0px 35px 0px;
+    padding: 5px 35px;
 }
 
 .header-span{
@@ -129,7 +129,7 @@ form{
 }
 
 .about p{
-
+    line-height: 1.2em;
 }
 
 .sub-header {

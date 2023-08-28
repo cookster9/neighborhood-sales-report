@@ -1,5 +1,10 @@
 {% extends "dashboard/base.html" %}
 {% load static %}
+
+{% block adheader %}
+ <!-- ad code here -->
+{% endblock %}
+
 {% block content %}
 
 <div class="second-content">
@@ -9,19 +14,15 @@
 </div>
 <div class="top-content top-background">
     <div class="sub-header">
-        <button onclick = "scrollToElement('site-header')">
-            <img class="uparrow" src="{% static 'dashboard/images/arrow-down.png' %}" alt="arrowbutton" border="0" />
-        </button>
+
         <button onclick = "scrollToElement('topHeader')">
             <img src="{% static 'dashboard/images/arrow-down.png' %}" alt="arrowbutton" border="0" />
         </button>
-        <h2 id="topHeader">See Nashville Most Recent Neighborhood Sales</h2>
+        <h2 id="topHeader">Nashville Home Sales By Neighborhood</h2>
         <button onclick = "scrollToElement('site-header')">
             <img class="uparrow" src="{% static 'dashboard/images/arrow-down.png' %}" alt="arrowbutton" border="0" />
         </button>
-        <button onclick = "scrollToElement('topHeader')">
-            <img src="{% static 'dashboard/images/arrow-down.png' %}" alt="arrowbutton" border="0" />
-        </button>
+
     </div>
     <div class="landing">
     <div class="landing-box">
