@@ -139,7 +139,7 @@ form{
     white-space: normal;
     display: flex;
     justify-content: space-evenly;
-    align-items: center;
+    align-items: start;
 }
 
 .sub-header p{
