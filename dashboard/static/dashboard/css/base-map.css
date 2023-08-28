@@ -147,17 +147,17 @@ color: #facea7;
 }
 
 .sub-header button{
-    border-radius: 3px;
-    height: 10vh;
-    width: 10vh;
+    border-radius: 0px;
+    height: auto;
+    width: auto;
     padding: 0px;
     cursor: pointer;
+    background-color: #202536;
 }
 
 .sub-header img{
     color: white;
-    background-color: #202536;
-    height: 10vh;
+    height: 5vh;
     width: 10vh;
 }
 
