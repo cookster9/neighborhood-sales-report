@@ -107,14 +107,17 @@ form{
     flex:1;
 }
 
+.header-links a{
+    text-align:center;
+    flex: 1
+}
+
 .header-link{
     margin: auto;
     border-style: solid;
     border-radius: 5px;
     border-color: #e6edfc;
     padding: 8px;
-    text-align:center;
-    flex: 1
 }
 
 .other-header{
