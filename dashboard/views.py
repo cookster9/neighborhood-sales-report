@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.mail import send_mail, BadHeaderError
-from dashboard.models import RealEstateInfoScrape
+from dashboard.models import RealEstateSales
+from dashboard.models import RealEstateProperties
 from django.core.cache import cache
 import os
 from datetime import datetime, timedelta
@@ -10,6 +11,22 @@ from .forms import ContactForm
 from django.conf import settings
 
 module_dir = os.path.dirname(__file__)
+
+def dict_generator(indict, pre=None):
+    pre = pre[:] if pre else []
+    if isinstance(indict, dict):
+        for key, value in indict.items():
+            if isinstance(value, dict):
+                for d in dict_generator(value, pre + [key]):
+                    yield d
+            elif isinstance(value, list) or isinstance(value, tuple):
+                for v in value:
+                    for d in dict_generator(v, pre + [key]):
+                        yield d
+            else:
+                yield pre + [key, value]
+    else:
+        yield pre + [indict]
 
 # /about
 def about_page(request):
@@ -49,23 +66,30 @@ def leaflet_map(request):
         six_weeks_ago = now - timedelta(weeks=6)
 
         # Perform the ORM query
-        queryset = RealEstateInfoScrape.objects.filter(
+        queryset = RealEstateSales.objects\
+            .select_related('real_estate_properties','real_estate_properties__neighborhoods','real_estate_properties__tn_davidson_addresses')\
+            .filter(
             sale_date__gt=six_weeks_ago,
-            property_use='SINGLE FAMILY'
+            real_estate_properties__property_use='SINGLE FAMILY'
         ).exclude(sale_price='$0').order_by('-sale_date')
 
+        print(queryset.query)
         # Access the query results
         group_dict = {}
         top_dict = {}
         for result in queryset:
-            neighborhood = result.neighborhoods.id
 
+            # property_info = RealEstateProperties.objects.filter(id=result.real_estate_properties_id)
+            # print(property_info.query)
+            # print(property_info[0].__dict__)
+            neighborhood = result.real_estate_properties.neighborhoods_id
+            print(neighborhood)
             if str(neighborhood) not in group_dict:
-                neighborhood_name = result.neighborhoods.description
+                neighborhood_name = result.real_estate_properties.neighborhoods.description
                 neighborhood_clean = re.sub('[^A-Za-z0-9 /]+', '', neighborhood_name)
 
-                avg_latitude = result.neighborhoods.latitude
-                avg_longitude = result.neighborhoods.longitude
+                avg_latitude = result.real_estate_properties.neighborhoods.latitude
+                avg_longitude = result.real_estate_properties.neighborhoods.longitude
                 mod_neighborhood = int(neighborhood) % 7
                 neighborhood_dict = {'lat': avg_latitude
                                      ,'long': avg_longitude
@@ -75,14 +99,14 @@ def leaflet_map(request):
                 }
                 group_dict[str(neighborhood)] = neighborhood_dict
 
-            if result.tn_davidson_addresses is not None:
-                house_json = {'reis_id': result.id
-                              ,'lat': result.tn_davidson_addresses.latitude
-                              ,'long': result.tn_davidson_addresses.longitude
-                              ,'address': result.location
+            if result.real_estate_properties.tn_davidson_addresses_id is not None:
+                house_json = {'reis_id': result.real_estate_properties.id
+                              ,'lat': result.real_estate_properties.tn_davidson_addresses.latitude
+                              ,'long': result.real_estate_properties.tn_davidson_addresses.longitude
+                              ,'address': result.real_estate_properties.location
                               ,'sale_date': result.sale_date
                               ,'sale_price': result.sale_price
-                              ,'square_footage': result.square_footage}
+                              ,'square_footage': result.real_estate_properties.square_footage}
                 group_dict[str(neighborhood)]['house_list'].append(house_json)
                 if len(top_dict) < 100:
                     top_dict[len(top_dict)] = house_json
