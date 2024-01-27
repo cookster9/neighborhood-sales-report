@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.mail import send_mail, BadHeaderError
 from dashboard.models import RealEstateSales
-from dashboard.models import RealEstateProperties
 from django.core.cache import cache
 import os
 from datetime import datetime, timedelta
@@ -56,7 +55,7 @@ def success(request):
     context = {}
     return render(request, 'dashboard/success.html', context)
 
-# /
+# /map
 def leaflet_map(request):
     context = cache.get('map')
     if context is None:
