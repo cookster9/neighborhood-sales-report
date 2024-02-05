@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.mail import send_mail, BadHeaderError
 from dashboard.models import RealEstateSales
+from dashboard.models import Neighborhoods
 from django.core.cache import cache
 import os
 from datetime import datetime, timedelta
@@ -58,11 +59,34 @@ def success(request):
 # /map
 def leaflet_map(request):
     context = cache.get('map')
-    if context is None:
+    if (request.GET.get('updatebtn')):
+        print("Hi") # mypythoncode.mypythonfunction(int(request.GET.get('mytextbox')))
+        return render('', 'dashboard/map_leaflet.html', context)
+    if 1==1: #context is None:
 
         # Get the current date and calculate the date six weeks ago
         now = datetime.now()
         six_weeks_ago = now - timedelta(weeks=6)
+
+        neighborhood_queryset = Neighborhoods.objects.filter(latitude__isnull=False)
+        # Access the query results
+        group_dict = {}
+
+        for result in neighborhood_queryset:
+            neighborhood = result.id
+            neighborhood_name = result.description
+            neighborhood_clean = re.sub('[^A-Za-z0-9 /]+', '', neighborhood_name)
+
+            avg_latitude = result.latitude
+            avg_longitude = result.longitude
+            mod_neighborhood = int(neighborhood) % 7
+            neighborhood_dict = {'lat': avg_latitude
+                , 'long': avg_longitude
+                , 'icon_num': mod_neighborhood
+                , 'name': neighborhood_clean
+                , 'house_list': []
+                                 }
+            group_dict[str(neighborhood)] = neighborhood_dict
 
         # Perform the ORM query
         queryset = RealEstateSales.objects\
@@ -72,9 +96,6 @@ def leaflet_map(request):
             real_estate_properties__property_use='SINGLE FAMILY'
         ).exclude(sale_price='$0').order_by('-sale_date')
 
-        print(queryset.query)
-        # Access the query results
-        group_dict = {}
         top_dict = {}
         for result in queryset:
 
@@ -83,20 +104,6 @@ def leaflet_map(request):
             # print(property_info[0].__dict__)
             neighborhood = result.real_estate_properties.neighborhoods_id
             print(neighborhood)
-            if str(neighborhood) not in group_dict:
-                neighborhood_name = result.real_estate_properties.neighborhoods.description
-                neighborhood_clean = re.sub('[^A-Za-z0-9 /]+', '', neighborhood_name)
-
-                avg_latitude = result.real_estate_properties.neighborhoods.latitude
-                avg_longitude = result.real_estate_properties.neighborhoods.longitude
-                mod_neighborhood = int(neighborhood) % 7
-                neighborhood_dict = {'lat': avg_latitude
-                                     ,'long': avg_longitude
-                                     ,'icon_num': mod_neighborhood
-                                     ,'name': neighborhood_clean
-                                     ,'house_list': []
-                }
-                group_dict[str(neighborhood)] = neighborhood_dict
 
             if result.real_estate_properties.tn_davidson_addresses_id is not None:
                 house_json = {'reis_id': result.real_estate_properties.id
@@ -130,4 +137,11 @@ def leaflet_map(request):
         cache.set('map',context)
     else:
         print("got cached content")
+    return render(request, 'dashboard/map_leaflet.html', context)
+
+def update_neighborhood(request):
+    print(request)
+    if (request.GET.get('updatebtn')):
+        print("Hi") # mypythoncode.mypythonfunction(int(request.GET.get('mytextbox')))
+    context = cache.get('map')
     return render(request, 'dashboard/map_leaflet.html', context)
