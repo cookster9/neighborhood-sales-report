@@ -2,31 +2,18 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.mail import send_mail, BadHeaderError
 from dashboard.models import RealEstateSales
-from dashboard.models import Neighborhoods
 from django.core.cache import cache
 import os
 from datetime import datetime, timedelta
 import re
 from .forms import ContactForm
+from .forms import NeighborhoodUpdateForm
 from django.conf import settings
+from dashboard.models import Neighborhoods
+from django.contrib import messages
+from .update_neighborhood import update_neighborhood
 
 module_dir = os.path.dirname(__file__)
-
-def dict_generator(indict, pre=None):
-    pre = pre[:] if pre else []
-    if isinstance(indict, dict):
-        for key, value in indict.items():
-            if isinstance(value, dict):
-                for d in dict_generator(value, pre + [key]):
-                    yield d
-            elif isinstance(value, list) or isinstance(value, tuple):
-                for v in value:
-                    for d in dict_generator(v, pre + [key]):
-                        yield d
-            else:
-                yield pre + [key, value]
-    else:
-        yield pre + [indict]
 
 # /about
 def about_page(request):
@@ -48,7 +35,8 @@ def contact_page(request):
                 send_mail(subject, message,app_email,[app_email])
             except BadHeaderError:
                 return HttpResponse("Invalid header found.")
-            return redirect("success")
+            messages.success(request, 'Thank you for your message.')
+            return redirect('success')
     return render(request, 'dashboard/contact.html', {"form": form})
 
 # /success
@@ -58,11 +46,24 @@ def success(request):
 
 # /map
 def leaflet_map(request):
+    context = None
+    if request.method == "POST":
+        # Create a form instance and populate it with data from the request (binding):
+        form = NeighborhoodUpdateForm(request.POST)
+        # Check if the form is valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required (here we just write it to the model due_back field)
+            update_id = form.cleaned_data['id']
+            print("Update ID", update_id)
+            success_message = update_neighborhood(update_id)
+
+            # redirect to a new URL:
+            messages.success(request, success_message)
+            return redirect('success')
+    else:
+        form = NeighborhoodUpdateForm()
     context = cache.get('map')
-    if (request.GET.get('updatebtn')):
-        print("Hi") # mypythoncode.mypythonfunction(int(request.GET.get('mytextbox')))
-        return render('', 'dashboard/map_leaflet.html', context)
-    if 1==1: #context is None:
+    if context is None:
 
         # Get the current date and calculate the date six weeks ago
         now = datetime.now()
@@ -103,7 +104,6 @@ def leaflet_map(request):
             # print(property_info.query)
             # print(property_info[0].__dict__)
             neighborhood = result.real_estate_properties.neighborhoods_id
-            print(neighborhood)
 
             if result.real_estate_properties.tn_davidson_addresses_id is not None:
                 house_json = {'reis_id': result.real_estate_properties.id
@@ -121,8 +121,6 @@ def leaflet_map(request):
             else:
                 group_dict[str(neighborhood)]['total_sale_count'] = 1
 
-
-        print(len(group_dict))
         NASHVILLE_LATITUDE = 36.164577
         NASHVILLE_LONGITUDE = -86.776949
 
@@ -133,15 +131,10 @@ def leaflet_map(request):
             ,'nash_long': NASHVILLE_LONGITUDE
             ,'groups': sorted_dict
             ,'top100': top_dict
+            ,'form': form
         }
-        cache.set('map',context)
+        # turn off cache for now
+        # cache.set('map',context)
     else:
         print("got cached content")
-    return render(request, 'dashboard/map_leaflet.html', context)
-
-def update_neighborhood(request):
-    print(request)
-    if (request.GET.get('updatebtn')):
-        print("Hi") # mypythoncode.mypythonfunction(int(request.GET.get('mytextbox')))
-    context = cache.get('map')
     return render(request, 'dashboard/map_leaflet.html', context)

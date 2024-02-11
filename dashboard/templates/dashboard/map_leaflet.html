@@ -9,9 +9,12 @@
 
 <div class="second-content">
     <div class="map-container">
-        <form action="#" method="get">
-            <input type="text" value="<ID HERE>" name="updateNeighborhoodId" size="1"/>
-            <input type="submit" class="btn" value="Update" name="updatebtn">
+        <form action="" method="post">
+            {% csrf_token %}
+            <table>
+                {{ form.as_table }}
+            </table>
+            <input type="submit" value="Submit">
         </form>
         <div id="map"></div>
     </div>
