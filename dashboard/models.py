@@ -1,6 +1,4 @@
 from django.db import models
-
-
 class Neighborhoods(models.Model):
     id = models.IntegerField(primary_key=True)
     description = models.TextField(blank=True, null=True)

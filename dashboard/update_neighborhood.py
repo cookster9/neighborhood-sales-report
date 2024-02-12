@@ -9,6 +9,8 @@ from dashboard.models import RealEstateProperties
 from dashboard.models import Neighborhoods
 from dashboard.models import RealEstateSales
 
+import pdb
+
 url_base = 'https://davidson-tn-citizen.comper.info/template.aspx?propertyID='
 def update_neighborhood(id):
     print("in update neighborhood")
@@ -30,7 +32,7 @@ def update_neighborhood(id):
                 ,real_estate_properties__neighborhoods_id=id) \
         .order_by('-sale_date')
     for house in q:
-        trimmed_map_parcel = q[0].map_parcel_trimmed
+        trimmed_map_parcel = house.real_estate_properties.map_parcel_trimmed
         # trimmed_map_parcel = '07116007400'
 
         url = url_base+trimmed_map_parcel
@@ -48,22 +50,26 @@ def update_neighborhood(id):
 
                 a = get_html(url)
                 # a = example_html
-                soup = BeautifulSoup(a,'lxml')
-                print(soup)
+
+                soup = BeautifulSoup(str(a),'lxml')
+
                 subjectBox = soup.find('div', class_='subjectBox')
                 if subjectBox != None:
                     # subjectBoxSoup = BeautifulSoup(subjectBox,'lxml')
-                    map_parcel = subjectBox['data-id']
-                    print(map_parcel)
-                    mailing_address = subjectBox.h2.string
-                    print(mailing_address)
-                    sale_date = '//*[@id="propertyOverview"]/div[4]/ul/li[6]/text()'
-                    sale_price = '//*[@id="propertyOverview"]/div[4]/ul/li[7]/text()'
-                    property_use = '//*[@id="content"]/div/div[4]/div[1]/ul/li[7]/text()'
-                    sq_ft = '//*[@id="content"]/div/div[4]/div[2]/div/div[1]/ul/li[3]/text()'
-                    zone = '//*[@id="content"]/div/div[4]/div[1]/ul/li[8]/text()'
-                    neighborhood = '//*[@id="content"]/div/div[4]/div[1]/ul/li[9]/text()'
-                    location = '//*[@id="propertyOverview"]/ul/li[2]/text()'
+                    salesList = soup.find_all('li', class_='comp')
+                    for comp in salesList:
+                        map_parcel = comp['data-id']
+                        print(map_parcel)
+                        # mailing_address = subjectBox.h2.string
+                        # print(mailing_address)
+                        sale_date = comp['saledate']
+                        sale_price = comp['saleprice']
+                        property_use = comp['buildingtype']
+                        # sq_ft = comp['saledate']
+                        # zone = comp['']
+                        neighborhood = comp['nbc_description']
+                        # location = comp['saledate']
+                        print(neighborhood)
 
                     n[0].status = 'pending'
                     n[0].save()
@@ -85,23 +91,23 @@ def update_neighborhood(id):
 def get_html(url):
     options = webdriver.ChromeOptions()
     options.add_argument('--headless')
+    options.add_argument('--ignore-certificate-errors')
+    options.add_argument('--allow-running-insecure-content')
+    options.add_experimental_option('excludeSwitches', ['enable-logging'])
     # executable_path param is not needed if you updated PATH
     PROJECT_ROOT = '/Users/andrewcook/Documents/Programming/'
     DRIVER_BIN = os.path.join(PROJECT_ROOT, "chromedriver")
     browser = webdriver.Chrome(options=options)
 
+    print("about to get url")
     browser.get(url)
 
-    myProperty = browser.find_element(By.XPATH,"/html/body/div[5]/div[2]/div[2]/div[5]/div")
-    print(myProperty)
     # elem = myProperty.click()
-    browser.execute_script("arguments[0].click();", myProperty)
+    # browser.execute_script("arguments[0].click();", myProperty)
+    print("getting html")
     html = browser.page_source
-    soup = BeautifulSoup(html, 'lxml')
-    # a = soup.find_all('li', class_='comp') # class_='class_name'
 
-    a = soup.find('div', id='myPropertyInfo')  # just the one
-    return a
+    return html
 example_html = """<div id="myPropertyInfo" style="padding:10px;"><div class="subjectBox" data-id="07116007400" style="cursor:pointer"><div style="float:left; width:80px;"> <img id="img-07116007400" src="proxy2.php?csurl=http://www.padctn.org/prc/Image_2023_Sep/48000/596001.JPG" style="width:80px;"/></div><div style="float:left; width:360px; margin-bottom:5px;"> <h2 style="float:left; padding-left:0.5em; text-transform: capitalize;">1311 rosedale ave</h2></div><div style="float:left; width:380px;"> <div style="margin-left:10px; margin-bottom:10px;"><ul class="propertyInfoC1" style="float:left; overflow: hidden; padding-right:1em; color:#444;"><li title="N/A">Distance: N/A</li><li title="N/A">Sale Date: N/A</li><li title="$296.84">App.Value/SqFt: $296.84</li> </ul><ul class="propertyInfoC2" style="float:left; overflow: hidden; padding-right:1em; color:#444;"><li title="1,075">Living Area: 1,075</li><li title="SINGLE FAMILY">Property Type: SINGLE FAMILY</li><li title="TOM JOY">Neigborhood: TOM JOY</li> </ul> </div></div><div style="clear:both;"></div></div></div>
 <div class="subjectBox" data-id="07116007400" style="cursor:pointer"><div style="float:left; width:80px;"> <img id="img-07116007400" src="proxy2.php?csurl=http://www.padctn.org/prc/Image_2023_Sep/48000/596001.JPG" style="width:80px;"/></div><div style="float:left; width:360px; margin-bottom:5px;"> <h2 style="float:left; padding-left:0.5em; text-transform: capitalize;">1311 rosedale ave</h2></div><div style="float:left; width:380px;"> <div style="margin-left:10px; margin-bottom:10px;"><ul class="propertyInfoC1" style="float:left; overflow: hidden; padding-right:1em; color:#444;"><li title="N/A">Distance: N/A</li><li title="N/A">Sale Date: N/A</li><li title="$296.84">App.Value/SqFt: $296.84</li> </ul><ul class="propertyInfoC2" style="float:left; overflow: hidden; padding-right:1em; color:#444;"><li title="1,075">Living Area: 1,075</li><li title="SINGLE FAMILY">Property Type: SINGLE FAMILY</li><li title="TOM JOY">Neigborhood: TOM JOY</li> </ul> </div></div><div style="clear:both;"></div></div>
 """
