@@ -8,17 +8,19 @@ import os
 from dashboard.models import RealEstateProperties
 from dashboard.models import Neighborhoods
 from dashboard.models import RealEstateSales
+import datetime
 
 import pdb
 
 url_base = 'https://davidson-tn-citizen.comper.info/template.aspx?propertyID='
 def update_neighborhood(id):
     print("in update neighborhood")
+    neighborhood_id = id
     # get map parcel of top 1 reis in neighborhood https://stackoverflow.com/questions/844591/how-to-do-select-max-in-django
     # trim map parcel
     # e.g. 07116007400
     n = Neighborhoods.objects\
-        .filter(id=id
+        .filter(id=neighborhood_id
                 ,status='pending')
     if(len(n)>0):
         n[0].status = 'processing'
@@ -26,12 +28,13 @@ def update_neighborhood(id):
         n[0].save()
     else:
         return 'ID already processing'
-    q = RealEstateSales.objects\
+
+    houses_to_try_urls_for = RealEstateSales.objects\
         .select_related('real_estate_properties')\
         .filter(real_estate_properties__property_use='SINGLE FAMILY'
-                ,real_estate_properties__neighborhoods_id=id) \
+                ,real_estate_properties__neighborhoods_id=neighborhood_id) \
         .order_by('-sale_date')
-    for house in q:
+    for house in houses_to_try_urls_for:
         trimmed_map_parcel = house.real_estate_properties.map_parcel_trimmed
         # trimmed_map_parcel = '07116007400'
 
@@ -40,13 +43,6 @@ def update_neighborhood(id):
         for j in range(10):
             try:
                 print("Trying url",url)
-                # get_response = requests.get(url)
-                # tree = html.fromstring(get_response.content)
-                # sales_list_xpath = '/html/body/div[5]/div[2]/div[4]/ul'
-                # sales_comps_xpath = '/html/body/div[5]/div[2]/div[4]/ul/li[1]'
-                # sales_list = tree.xpath(sales_comps_xpath)
-                # print(sales_list)
-
 
                 a = get_html(url)
                 # a = example_html
@@ -59,17 +55,44 @@ def update_neighborhood(id):
                     salesList = soup.find_all('li', class_='comp')
                     for comp in salesList:
                         map_parcel = comp['data-id']
-                        print(map_parcel)
-                        # mailing_address = subjectBox.h2.string
-                        # print(mailing_address)
                         sale_date = comp['saledate']
                         sale_price = comp['saleprice']
-                        property_use = comp['buildingtype']
-                        # sq_ft = comp['saledate']
-                        # zone = comp['']
-                        neighborhood = comp['nbc_description']
-                        # location = comp['saledate']
-                        print(neighborhood)
+                        address = comp.find_all('div')[1].find_all('h2')[0].string
+                        print(address)
+                        print("sale date comparison")
+                        print(map_parcel)
+                        print(sale_date)
+                        sale_date_obj = datetime.datetime.strptime(sale_date, '%d %b %Y').date()
+                        print(sale_date_obj)
+                        houses_in_db = RealEstateProperties.objects \
+                            .filter(map_parcel_trimmed=map_parcel)
+                        houses_returned=len(houses_in_db)
+                        if houses_returned == 0:
+                            print("need to create new property as well")
+                            house_in_db = RealEstateProperties.objects.create(map_parcel_trimmed=map_parcel
+                                                                              ,location=address
+                                                                              ,neighborhood=neighborhood_id
+                                                                              ,last_update_date=datetime.date.today())
+                        else:
+                            house_in_db = houses_in_db[0]
+                        print("got house",house_in_db)
+                        latest_sale = RealEstateSales.objects \
+                            .filter(real_estate_properties_id=house_in_db.id) \
+                            .order_by('-sale_date')
+                        print("got sale", latest_sale)
+                        print(latest_sale)
+                        num_sales=len(latest_sale)
+                        if num_sales == 0:
+                            print("add sale")
+                            sale_create = RealEstateSales.objects.create(sale_date=sale_date_obj
+                                                                         ,sale_price=sale_price
+                                                                         ,real_estate_properties_id=house_in_db.id)
+                        else:
+                            if latest_sale[0].sale_date < sale_date_obj:
+                                print("add sale")
+                                sale_create = RealEstateSales.objects.create(sale_date=sale_date_obj
+                                                                             , sale_price=sale_price
+                                                                             , real_estate_properties_id=house_in_db.id)
 
                     n[0].status = 'pending'
                     n[0].save()
