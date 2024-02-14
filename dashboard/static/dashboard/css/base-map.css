@@ -80,6 +80,10 @@ form{
     justify-content: center;
 }
 
+.second-content span{
+    color: #031842;
+}
+
 .header-row{
     display: flex;
     flex-wrap: wrap;
@@ -222,7 +226,6 @@ color: #facea7;
 }
 
 .form-group label{
-    color: #e6edfc;
     justify-content: flex-start;
     width: 100px;
     text-overflow: ellipsis;

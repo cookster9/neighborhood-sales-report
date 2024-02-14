@@ -9,6 +9,13 @@
 
 <div class="second-content">
     <div class="map-container">
+        <form action="" method="post">
+            {% csrf_token %}
+            <table>
+                {{ form.as_table }}
+            </table>
+            <input type="submit" value="Submit">
+        </form>
         <div id="map"></div>
     </div>
 </div>
@@ -35,6 +42,7 @@
     </div>
     <div class="landing-box">
         <div class="tableFixHead">
+
               <table>
                   <tr>
                     <th>Address</th>
@@ -49,7 +57,7 @@
                     </tr>
                   {% endfor %}
               </table>
-            </div>
+        </div>
     </div>
     </div>
 </div>
@@ -75,69 +83,30 @@ function toggleNeighborhoodVisibility(obj) {
     markerAry[10*obj.id].map(a => a.remove());
   }
 }
-var icon0 = new L.Icon({
-  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-black.png',
-  shadowUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-shadow.png',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41]
-});var icon1 = new L.Icon({
-  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png',
-  shadowUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-shadow.png',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41]
+
+const iconUrlAry = ['https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-black.png'
+,'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png'
+,'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-yellow.png'
+,'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png'
+,'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-grey.png'
+,'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-orange.png'
+,'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png'
+,'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-violet.png'];
+
+const iconAry = [];
+
+iconUrlAry.forEach((url) => {
+    var icon = new L.Icon({
+          iconUrl: url,
+          shadowUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-shadow.png',
+          iconSize: [25, 41],
+          iconAnchor: [12, 41],
+          popupAnchor: [1, -34],
+          shadowSize: [41, 41]
+        });
+    iconAry.push(icon);
 });
-var icon2 = new L.Icon({
-  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-yellow.png',
-  shadowUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-shadow.png',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41]
-});
-var icon3 = new L.Icon({
-  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png',
-  shadowUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-shadow.png',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41]
-});
-var icon4 = new L.Icon({
-  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-grey.png',
-  shadowUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-shadow.png',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41]
-});
-var icon5 = new L.Icon({
-  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-orange.png',
-  shadowUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-shadow.png',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41]
-});
-var icon6 = new L.Icon({
-  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
-  shadowUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-shadow.png',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41]
-});
-var icon7 = new L.Icon({
-  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-violet.png',
-  shadowUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-shadow.png',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41]
-});
+
 var iconHover = new L.Icon({
   iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-gold.png',
   shadowUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-shadow.png',
@@ -146,6 +115,7 @@ var iconHover = new L.Icon({
   popupAnchor: [1, -34],
   shadowSize: [46, 46]
 });
+
 var map = L.map('map').setView([{{nash_lat}}, {{nash_long}}], 13);
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
@@ -154,7 +124,8 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 var markerAry = {};
 var houseAry = {};
 {% for key, value in groups.items %}
-    var marker{{key}} = L.marker([{{value.lat}}, {{value.long}}], {icon: icon{{value.icon_num}}}).addTo(map);
+    var iconItem = iconAry[{{value.icon_num}}];
+    var marker{{key}} = L.marker([{{value.lat}}, {{value.long}}], {icon: iconItem}).addTo(map);
     markerAry[{{key}}]=marker{{key}};
     var array{{key}} = new Array();
     markerAry[10*{{key}}]=array{{key}};
@@ -165,12 +136,12 @@ var houseAry = {};
         });
     marker{{key}}.on('mouseout', function()
         {
-            marker{{key}}.setIcon(icon{{value.icon_num}});
+            marker{{key}}.setIcon(iconItem);
             array{{key}}.map(a => a.setStyle({fillColor: 'blue', radius: 30}));
         });
     marker{{key}}.bindTooltip("{{value.name}}");
     var table_html = '';
-    table_html = '<table><tr><th>Address</th><th>Sale Date</th><th>Sale Price</th><th>Sq Ft</th></tr>';
+    table_html = '{{value.name}} (ID: {{key}} Last Updated: {{value.last_updated}})<br><table><tr><th>Address</th><th>Sale Date</th><th>Sale Price</th><th>Sq Ft</th></tr>';
     {% for house_dict in value.house_list %}
         var circle{{house_dict.reis_id}} = L.circle([{{house_dict.lat}}, {{house_dict.long}}], {
                 color: 'blue',

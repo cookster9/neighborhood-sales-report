@@ -3,6 +3,13 @@
 {% block content %}
 <!-- templates/email.html -->
 <div class="full-container">
-    <h1>Success! Thank you for your message.</h1>
+    <h1>Success!</h1>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
 </div>
 {% endblock %}

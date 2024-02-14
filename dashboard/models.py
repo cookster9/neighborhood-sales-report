@@ -1,6 +1,4 @@
 from django.db import models
-
-
 class Neighborhoods(models.Model):
     id = models.IntegerField(primary_key=True)
     description = models.TextField(blank=True, null=True)
@@ -8,6 +6,7 @@ class Neighborhoods(models.Model):
     status = models.TextField(blank=True, null=True)
     latitude = models.CharField(max_length=50, blank=True, null=True)
     longitude = models.CharField(max_length=50, blank=True, null=True)
+    visible = models.BooleanField()
 
     class Meta:
         managed = False
@@ -27,6 +26,7 @@ class RealEstateProperties(models.Model):
     id = models.IntegerField(primary_key=True)
     padctn_id = models.IntegerField(unique=True, blank=True, null=True)
     map_parcel = models.CharField(max_length=200, blank=True, null=True)
+    map_parcel_trimmed = models.CharField(max_length=200, blank=True, null=True)
     mailing_address = models.CharField(max_length=200, blank=True, null=True)
     property_use = models.CharField(max_length=200, blank=True, null=True)
     zone = models.CharField(max_length=200, blank=True, null=True)

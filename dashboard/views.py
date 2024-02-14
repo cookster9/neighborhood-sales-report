@@ -7,25 +7,13 @@ import os
 from datetime import datetime, timedelta
 import re
 from .forms import ContactForm
+from .forms import NeighborhoodUpdateForm
 from django.conf import settings
+from dashboard.models import Neighborhoods
+from django.contrib import messages
+from .update_neighborhood import update_neighborhood
 
 module_dir = os.path.dirname(__file__)
-
-def dict_generator(indict, pre=None):
-    pre = pre[:] if pre else []
-    if isinstance(indict, dict):
-        for key, value in indict.items():
-            if isinstance(value, dict):
-                for d in dict_generator(value, pre + [key]):
-                    yield d
-            elif isinstance(value, list) or isinstance(value, tuple):
-                for v in value:
-                    for d in dict_generator(v, pre + [key]):
-                        yield d
-            else:
-                yield pre + [key, value]
-    else:
-        yield pre + [indict]
 
 # /about
 def about_page(request):
@@ -47,7 +35,8 @@ def contact_page(request):
                 send_mail(subject, message,app_email,[app_email])
             except BadHeaderError:
                 return HttpResponse("Invalid header found.")
-            return redirect("success")
+            messages.success(request, 'Thank you for your message.')
+            return redirect('success')
     return render(request, 'dashboard/contact.html', {"form": form})
 
 # /success
@@ -55,14 +44,52 @@ def success(request):
     context = {}
     return render(request, 'dashboard/success.html', context)
 
-# /map
+# /
 def leaflet_map(request):
+    context = None
+    if request.method == "POST":
+        # Create a form instance and populate it with data from the request (binding):
+        form = NeighborhoodUpdateForm(request.POST)
+        # Check if the form is valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required (here we just write it to the model due_back field)
+            update_id = form.cleaned_data['id']
+            print("Update ID", update_id)
+            success_message = update_neighborhood(update_id)
+
+            # redirect to a new URL:
+            messages.success(request, success_message)
+            return redirect('success')
+    else:
+        form = NeighborhoodUpdateForm()
     context = cache.get('map')
     if context is None:
 
         # Get the current date and calculate the date six weeks ago
         now = datetime.now()
         six_weeks_ago = now - timedelta(weeks=6)
+
+        neighborhood_queryset = (Neighborhoods.objects
+                                 .filter(latitude__isnull=False, visible=True))
+        # Access the query results
+        group_dict = {}
+
+        for result in neighborhood_queryset:
+            neighborhood = result.id
+            neighborhood_name = result.description
+            neighborhood_clean = re.sub('[^A-Za-z0-9 /]+', '', neighborhood_name)
+
+            avg_latitude = result.latitude
+            avg_longitude = result.longitude
+            mod_neighborhood = int(neighborhood) % 7
+            neighborhood_dict = {'lat': avg_latitude
+                , 'long': avg_longitude
+                , 'icon_num': mod_neighborhood
+                , 'name': neighborhood_clean
+                , 'last_updated': result.last_updated
+                , 'house_list': []
+                                 }
+            group_dict[str(neighborhood)] = neighborhood_dict
 
         # Perform the ORM query
         queryset = RealEstateSales.objects\
@@ -72,9 +99,6 @@ def leaflet_map(request):
             real_estate_properties__property_use='SINGLE FAMILY'
         ).exclude(sale_price='$0').order_by('-sale_date')
 
-        print(queryset.query)
-        # Access the query results
-        group_dict = {}
         top_dict = {}
         for result in queryset:
 
@@ -82,21 +106,6 @@ def leaflet_map(request):
             # print(property_info.query)
             # print(property_info[0].__dict__)
             neighborhood = result.real_estate_properties.neighborhoods_id
-            print(neighborhood)
-            if str(neighborhood) not in group_dict:
-                neighborhood_name = result.real_estate_properties.neighborhoods.description
-                neighborhood_clean = re.sub('[^A-Za-z0-9 /]+', '', neighborhood_name)
-
-                avg_latitude = result.real_estate_properties.neighborhoods.latitude
-                avg_longitude = result.real_estate_properties.neighborhoods.longitude
-                mod_neighborhood = int(neighborhood) % 7
-                neighborhood_dict = {'lat': avg_latitude
-                                     ,'long': avg_longitude
-                                     ,'icon_num': mod_neighborhood
-                                     ,'name': neighborhood_clean
-                                     ,'house_list': []
-                }
-                group_dict[str(neighborhood)] = neighborhood_dict
 
             if result.real_estate_properties.tn_davidson_addresses_id is not None:
                 house_json = {'reis_id': result.real_estate_properties.id
@@ -114,8 +123,6 @@ def leaflet_map(request):
             else:
                 group_dict[str(neighborhood)]['total_sale_count'] = 1
 
-
-        print(len(group_dict))
         NASHVILLE_LATITUDE = 36.164577
         NASHVILLE_LONGITUDE = -86.776949
 
@@ -126,8 +133,10 @@ def leaflet_map(request):
             ,'nash_long': NASHVILLE_LONGITUDE
             ,'groups': sorted_dict
             ,'top100': top_dict
+            ,'form': form
         }
-        cache.set('map',context)
+        # turn off cache for now
+        # cache.set('map',context)
     else:
         print("got cached content")
     return render(request, 'dashboard/map_leaflet.html', context)
