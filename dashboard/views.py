@@ -44,7 +44,7 @@ def success(request):
     context = {}
     return render(request, 'dashboard/success.html', context)
 
-# /map
+# /
 def leaflet_map(request):
     context = None
     if request.method == "POST":
