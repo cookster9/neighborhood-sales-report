@@ -1,6 +1,3 @@
-import requests
-from lxml import html
-from time import sleep
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.by import By
