@@ -141,7 +141,7 @@ var houseAry = {};
         });
     marker{{key}}.bindTooltip("{{value.name}}");
     var table_html = '';
-    table_html = '{{value.name}} (ID: {{key}})<br><table><tr><th>Address</th><th>Sale Date</th><th>Sale Price</th><th>Sq Ft</th></tr>';
+    table_html = '{{value.name}} (ID: {{key}} Last Updated: {{value.last_updated}})<br><table><tr><th>Address</th><th>Sale Date</th><th>Sale Price</th><th>Sq Ft</th></tr>';
     {% for house_dict in value.house_list %}
         var circle{{house_dict.reis_id}} = L.circle([{{house_dict.lat}}, {{house_dict.long}}], {
                 color: 'blue',

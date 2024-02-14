@@ -69,7 +69,8 @@ def leaflet_map(request):
         now = datetime.now()
         six_weeks_ago = now - timedelta(weeks=6)
 
-        neighborhood_queryset = Neighborhoods.objects.filter(latitude__isnull=False)
+        neighborhood_queryset = (Neighborhoods.objects
+                                 .filter(latitude__isnull=False, visible=True))
         # Access the query results
         group_dict = {}
 
@@ -85,6 +86,7 @@ def leaflet_map(request):
                 , 'long': avg_longitude
                 , 'icon_num': mod_neighborhood
                 , 'name': neighborhood_clean
+                , 'last_updated': result.last_updated
                 , 'house_list': []
                                  }
             group_dict[str(neighborhood)] = neighborhood_dict

@@ -6,6 +6,7 @@ class Neighborhoods(models.Model):
     status = models.TextField(blank=True, null=True)
     latitude = models.CharField(max_length=50, blank=True, null=True)
     longitude = models.CharField(max_length=50, blank=True, null=True)
+    visible = models.BooleanField()
 
     class Meta:
         managed = False
